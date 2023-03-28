@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CoroutineStart</string>
+    <string name="city">City:</string>
+    <string name="kyiv">Kyiv</string>
+    <string name="temperature">Temperature:</string>
+    <string name="download">Download</string>
 </resources>
