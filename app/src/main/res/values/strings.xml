@@ -4,4 +4,5 @@
     <string name="kyiv">Kyiv</string>
     <string name="temperature">Temperature:</string>
     <string name="download">Download</string>
+    <string name="load_temperature">"Loading temperature for city: %s"</string>
 </resources>
