@@ -2,14 +2,12 @@ package com.example.coroutinestart
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.coroutinestart.databinding.ActivityMainBinding
-import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -25,17 +23,24 @@ class MainActivity : AppCompatActivity() {
             with(binding) {
                 buttonLoad.isEnabled = false
                 progress.visibility = View.VISIBLE
-                val cityJob = lifecycleScope.launch {
+                val deferredCity: Deferred<String> = lifecycleScope.async {
                     val city = loadCity()
                     tvCity.text = city
+                    city
                 }
-                val tempJob = lifecycleScope.launch {
+                val deferredTemp: Deferred<Int> = lifecycleScope.async {
                     val temp = loadTemperature()
                     tvTemperature.text = temp.toString()
+                    temp
                 }
                 lifecycleScope.launch {
-                    cityJob.join()
-                    tempJob.join()
+                    val city = deferredCity.await()
+                    val temp = deferredTemp.await()
+                    Toast.makeText(
+                        this@MainActivity,
+                        "City:$city Temperature:$temp",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     progress.visibility = View.GONE
                     buttonLoad.isEnabled = true
                 }
